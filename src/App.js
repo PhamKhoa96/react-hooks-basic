@@ -7,6 +7,7 @@ import TodoList from './components/TodoList';
 import PostList from './components/PostList';
 import Pagination from './components/Pagination';
 import PostFilterForm from './components/PostFilterForm';
+import Clock from './components/Clock';
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -46,7 +47,7 @@ function App() {
 
     console.log('POST list effect');
     fetchPostList();
-  }, [filters]); // this effect wiil run again when this filters change
+  }, [filters]); // this effect will run again when this filters change
 
   useEffect(() => {
     console.log('TODO list effect');
@@ -84,11 +85,21 @@ function App() {
 
   function handleFilterChange(newFilters) {
     console.log('New filters: ', newFilters);
+    setFilters({
+      ...filters,
+      _page: 1, // reset to page 1 to display the founded results
+      title_like: newFilters.searchTerm,
+    });
   }
+
+  const [showClock, setShowClock] = useState(true);
 
   return (
     <div className="app">
       <h1> Hello world! </h1>
+      {showClock && <Clock />}
+      <button onClick={() => setShowClock(false)}>Hide Clock</button>
+      <br></br>
       <ColorBox />
       <TodoForm onSubmit={handleTodoFormSubmit} />
       <TodoList
